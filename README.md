@@ -7,6 +7,4 @@ data:
 
 laravel logger
 
-thinkphp logger
-
 ...
