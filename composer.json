@@ -1,0 +1,25 @@
+{
+    "name": "itedo/itedo-logger",
+    "description": "itedo laravel logger",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Just itedo",
+            "email": "5575165@qq.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/hzp0szl/itedo-logger/issues"
+    },
+    "require": {
+        "php": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IteLog\\": "src/"
+        }
+    },
+    "extra": {
+    }
+}
+
