@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use IteLog\Facades\IteLogFacades;
 use IteLog\Service\IteLogService;
+use function Ehuidiy\Providers\config_path;
 
 /**
  * Class ReqResLoggerProvider
