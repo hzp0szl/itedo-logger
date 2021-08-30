@@ -3,6 +3,7 @@
 namespace IteLog\Providers;
 
 use Closure;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use IteLog\Facades\IteLogFacades;
@@ -63,10 +64,8 @@ class ReqResLoggerProvider extends ServiceProvider
                 }
                 $sql = str_replace("\\", "", $sql);
                 //
-                list($t1, $t2) = explode(' ', microtime());
-                $microtime = (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
                 $this->result[] = [
-                    'startTime' => date('Y-m-d H:i:s.u', $microtime),
+                    'startTime' => Carbon::now()->toDate()->format('Y-m-d H:i:s.u'),
                     'executionTime' => $query->time . 'ms;',
                     'sql' => $sql,
                 ];

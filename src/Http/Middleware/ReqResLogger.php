@@ -5,6 +5,7 @@ namespace IteLog\Http\Middleware;
 use Closure;
 use Doctrine\DBAL\Driver\PDOConnection;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use IteLog\Facades\IteLogFacades;
@@ -26,19 +27,20 @@ class ReqResLogger
     public function handle($request, Closure $next)
     {
         //响应数据
+        $startUsage = memory_get_usage();
         IteLogFacades::setStartTime();
         $start = IteLogFacades::getStartTime();
         $response = $next($request);
         $inData = [
-            'startTime' => date('Y-m-d H:i:s.u', $start),
+            'startTime' => $start,
             'request' => $this->request($request),
-            'authorization' => $request->server('HTTP_AUTHORIZATION'),
-            'resource' => $this->resource($response),
+            'headers' => $this->headers($request)
         ];
         IteLogFacades::setStartTime();
         $stop = IteLogFacades::getStartTime();
-        $inData['stopTime'] = date('Y-m-d H:i:s.u', $stop);
-        $inData['time'] = $stop - $start;
+        $inData['stopTime'] = $stop;
+        $inData['resource'] = $this->resource($response, $start, $stop, $startUsage);
+        $inData['diffTime'] = carbon::parse($start)->diffInMilliseconds($stop, false) . ' ms';
         //
         IteLogFacades::into($inData);
         return $response;
@@ -60,18 +62,37 @@ class ReqResLogger
     }
 
     /**
-     * @param $response
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
-    private function resource($response): array
+    private function headers(\Illuminate\Http\Request $request): array
+    {
+        $collect = collect($request->headers->all())->map(function ($head) {
+            return $head[0];
+        });
+        $collect->put('cookie', $request->cookie());
+        $collect->put('server_protocol', $request->server('SERVER_PROTOCOL'));
+        $collect->put('request_time_float', $request->server('REQUEST_TIME_FLOAT'));
+        $collect->put('request_time', date('Y-m-d H:i:s', $request->server('REQUEST_TIME')));
+        return $collect->all();
+    }
+
+    /**
+     * @param $response
+     * @param $start
+     * @param $stop
+     * @param $startUsage
+     * @return array
+     */
+    private function resource($response, $start, $stop, $startUsage): array
     {
         $pdo = DB::getPdo();
-        $runtime    = round(microtime(true) - microtime(true), 10);
-        $reqs       = $runtime > 0 ? number_format(1 / $runtime, 2) : '∞';
-        $time_str   = ' [运行时间：' . number_format($runtime, 6) . 's][吞吐率：' . $reqs . 'req/s]';
-        $memory_use = number_format((memory_get_usage() - memory_get_usage()) / 1024, 2);
+        $runtime = carbon::parse($start)->diffInMilliseconds($stop, true);
+        $reqs = $runtime > 0 ? number_format(1000 / $runtime, 2) : '∞';
+        $time_str = ' [运行时间：' . number_format($runtime, 6) . 'ms][吞吐率：' . $reqs . 'req/ms]';
+        $memory_use = number_format((memory_get_usage() - $startUsage) / 1024, 2);
         $memory_str = ' [内存消耗：' . $memory_use . 'kb]';
-        $file_load  = ' [文件加载：' . count(get_included_files()) . ']';
+        $file_load = ' [文件加载：' . count(get_included_files()) . ']';
         return [
             'serverInfo' => $pdo->getAttribute(PDO::ATTR_SERVER_INFO),
             'connectionStatus' => $pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS),

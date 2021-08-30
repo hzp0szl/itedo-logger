@@ -2,6 +2,7 @@
 
 namespace IteLog\Service;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -41,9 +42,7 @@ class IteLogService
      */
     public function setStartTime()
     {
-        list($t1, $t2) = explode(' ', microtime());
-        $microTime = (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
-        $this->startTime = $microTime;
+        $this->startTime = Carbon::now()->toDate()->format('Y-m-d H:i:s.u');
     }
 
     /**
@@ -72,6 +71,7 @@ class IteLogService
      */
     private function intoMongodb(array $inData)
     {
+        dd($inData);
         $collection = config('itelog.mongo_table', 'iteLog');
         $db = DB::connection('mongodb')->collection($collection);
         $db->insert($inData);
