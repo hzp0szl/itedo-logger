@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use IteLog\Facades\IteLogFacades;
 use IteLog\Service\IteLogService;
-use function Ehuidiy\Providers\config_path;
 
 /**
  * Class ReqResLoggerProvider
@@ -49,13 +48,7 @@ class IteLoggerProvider extends ServiceProvider
      */
     public function mapPublish()
     {
-        if (!function_exists('config_path')) {
-            function config_path()
-            {
-                return app()->basePath('config');
-            }
-        }
-        $this->publishes([__DIR__ . '/../config' => config_path()], 'itelog');
+        $this->publishes([__DIR__ . '/../config' => app()->basePath('config')], 'itelog');
     }
 
     /**
