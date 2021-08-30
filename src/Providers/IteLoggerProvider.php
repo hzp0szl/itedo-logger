@@ -14,7 +14,7 @@ use function Ehuidiy\Providers\config_path;
  * Class ReqResLoggerProvider
  * @package IteLog\Providers
  */
-class ReqResLoggerProvider extends ServiceProvider
+class IteLoggerProvider extends ServiceProvider
 {
     /**
      * @var array
@@ -40,7 +40,22 @@ class ReqResLoggerProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->mapPublish();
         $this->setSql();
+    }
+
+    /**
+     * 生成配置
+     */
+    public function mapPublish()
+    {
+        if (!function_exists('config_path')) {
+            function config_path()
+            {
+                return app()->basePath('config');
+            }
+        }
+        $this->publishes([__DIR__ . '/../config' => config_path()], 'itelog');
     }
 
     /**
