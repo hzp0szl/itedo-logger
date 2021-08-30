@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static setSqlList(array $sqlArr);
  * @method static getSqlList();
+ * @method static setStartTime();
+ * @method static getStartTime();
+ * @method static into(array $inData);
  *
  * Class IteLogFacades
  * @package IteLog\Facades
