@@ -71,7 +71,6 @@ class IteLogService
      */
     private function intoMongodb(array $inData)
     {
-        dd($inData);
         $collection = config('itelog.mongo_table', 'iteLog');
         $db = DB::connection('mongodb')->collection($collection);
         $db->insert($inData);
