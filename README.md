@@ -89,13 +89,13 @@ app/Exceptions/Handler.php
 render()方法内新增
 ```
 if (config('itelog.exception')) {
-$throw = [
-'code' => $exception->getCode(),
-'message' => $exception->getMessage(),
-'line' => $exception->getLine(),
-'trace' => $exception->getTraceAsString(),
-];
-IteLogFacades::setExceptions($throw);
-return response()->json($throw);
+    $throw = [
+        'code' => $exception->getCode(),
+        'message' => $exception->getMessage(),
+        'line' => $exception->getLine(),
+        'trace' => $exception->getTraceAsString(),
+    ];
+    IteLogFacades::setExceptions($throw);
+    return response()->json($throw);
 }
 ```
