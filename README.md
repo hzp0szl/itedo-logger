@@ -26,7 +26,8 @@ return [
 ### App\Http\Kernel.php
 $routeMiddleware 新增一行请求相应日志
 ```
-'req.res.log' => \IteLog\Http\Middleware\ReqResLogger::class,```
+'req.res.log' => \IteLog\Http\Middleware\ReqResLogger::class,
+```
 路由加 req.res.log中间件
 ```Route::group([
 'middleware' => ['req.res.log']
