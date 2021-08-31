@@ -16,12 +16,20 @@ class IteLogService
      * @var $sqlArr
      */
     protected $sqlArr;
+
     /**
      * @var string
      */
     protected $startTime;
 
     /**
+     * @var
+     */
+    protected $exceptions = [];
+
+    /**
+     * 设置SQL列表
+     *
      * @param $sqlArr
      */
     public function setSqlList($sqlArr)
@@ -30,6 +38,8 @@ class IteLogService
     }
 
     /**
+     * 获取SQL列表
+     *
      * @return mixed
      */
     public function getSqlList()
@@ -46,6 +56,8 @@ class IteLogService
     }
 
     /**
+     * 获取开始时间
+     *
      * @return string
      */
     public function getStartTime(): string
@@ -53,8 +65,14 @@ class IteLogService
         return $this->startTime;
     }
 
+    /**
+     * 插入数据
+     *
+     * @param array $inData
+     */
     public function into(array $inData)
     {
+        $inData['exceptions'] = $this->getExceptions();
         $driver = config('itelog.driver');
         switch ($driver) {
             case 'mongodb':
@@ -82,5 +100,25 @@ class IteLogService
     private function intoFile(array $inData)
     {
         Log::channel('iteLog')->info('', $inData);
+    }
+
+    /**
+     * 设置错误日志
+     *
+     * @param array $exceptions
+     */
+    public function setExceptions(array $exceptions)
+    {
+        $this->exceptions = $exceptions;
+    }
+
+    /**
+     * 获取错误日志
+     *
+     * @return mixed
+     */
+    public function getExceptions(): array
+    {
+        return $this->exceptions;
     }
 }

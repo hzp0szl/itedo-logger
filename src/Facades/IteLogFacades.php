@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static getSqlList();
  * @method static setStartTime();
  * @method static getStartTime();
+ * @method static setExceptions(array $exceptions);
+ * @method static getExceptions();
  * @method static into(array $inData);
  *
  * Class IteLogFacades
