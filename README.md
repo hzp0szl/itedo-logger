@@ -77,10 +77,16 @@ channels 新增配置日志驱动
 ```
 
 ### 异常记录
+config/itelog.php
+新增配置
+```
+//异常开启true false
+'exception' => 'true',
+
+```
 app/Exceptions/Handler.php
 
 render()方法内新增
-
 ```
 if (config('itelog.exception')) {
 $throw = [
