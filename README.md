@@ -1,8 +1,8 @@
 # itedo-logger
 
-### 版本
+### 框架版本
 <a href="https://github.com/hzp0szl/itedo-logger">laravel版本</a>
-
+` | `
 <a href="https://github.com/hzp0szl/think-itedo-logger">thinkphp版本</a>
 
 ### 简介
