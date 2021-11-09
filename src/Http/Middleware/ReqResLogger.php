@@ -32,6 +32,7 @@ class ReqResLogger
         $start = IteLogFacades::getStartTime();
         $response = $next($request);
         $inData = [
+            'source' => 'laravel-itedo-logger',
             'startTime' => $start,
             'request' => $this->request($request),
             'headers' => $this->headers($request)
@@ -70,7 +71,7 @@ class ReqResLogger
         $collect = collect($request->headers->all())->map(function ($head) {
             return $head[0];
         });
-        $collect->put('cookie', $request->cookie());
+        $collect->put('cookie', $request->cookie() ?? '');
         $collect->put('server_protocol', $request->server('SERVER_PROTOCOL'));
         $collect->put('request_time_float', $request->server('REQUEST_TIME_FLOAT'));
         $collect->put('request_time', date('Y-m-d H:i:s', $request->server('REQUEST_TIME')));

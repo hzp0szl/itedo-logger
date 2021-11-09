@@ -73,11 +73,14 @@ class IteLoggerProvider extends ServiceProvider
                 }
                 $sql = str_replace("\\", "", $sql);
                 //
-                $this->result[] = [
-                    'startTime' => Carbon::now()->toDate()->format('Y-m-d H:i:s.u'),
-                    'executionTime' => $query->time . 'ms;',
-                    'sql' => $sql,
-                ];
+//                $this->result[] = [
+//                    'startTime' => Carbon::now()->toDate()->format('Y-m-d H:i:s.u'),
+//                    'executionTime' => $query->time . 'ms;',
+//                    'sql' => $sql,
+//                ];
+                // 匹配thinkphp格式
+                $date = Carbon::now()->toDate()->format('Y-m-d H:i:s.u');
+                $this->result[] = '[ SQL ] ' . $sql . ' [ ' . $date . 'RunTime:' . $query->time . 'ms ]';
                 //设置数据
                 IteLogFacades::setSqlList($this->result);
             });
