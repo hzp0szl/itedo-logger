@@ -12,7 +12,8 @@
         "issues": "https://github.com/hzp0szl/itedo-logger/issues"
     },
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "jenssegers/mongodb": "v3.*"
     },
     "autoload": {
         "psr-4": {
