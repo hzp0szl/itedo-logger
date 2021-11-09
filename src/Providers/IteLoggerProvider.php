@@ -80,7 +80,7 @@ class IteLoggerProvider extends ServiceProvider
 //                ];
                 // 匹配thinkphp格式
                 $date = Carbon::now()->toDate()->format('Y-m-d H:i:s.u');
-                $this->result[] = '[ SQL ] ' . $sql . ' [ ' . $date . ' RunTime:' . $query->time . 'ms ]';
+                $this->result[] = '[ sql ] ' . $sql . ' [ ' . $date . ' runTime:' . $query->time . 'ms ]';
                 //设置数据
                 IteLogFacades::setSqlList($this->result);
             });
