@@ -59,7 +59,7 @@ class IteLoggerProvider extends ServiceProvider
         $logger = config('itelog.logger');
         if ($logger) {
             DB::listen(function ($query) {
-                $sql = str_replace('?', '"' . '%s' . '"', $query->sql);
+                $sql = str_replace(array('%', '?'), array('%%', '%s'), $query->sql);
                 $qBindings = [];
                 foreach ($query->bindings as $key => $value) {
                     if (is_numeric($key)) {
