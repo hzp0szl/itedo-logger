@@ -112,3 +112,6 @@ if (config('itelog.exception')) {
     return response()->json($throw);
 }
 ```
+
+### Mongodb效果图
+![e8efc121fd7ebfef260b2c913471f04](https://user-images.githubusercontent.com/25895643/161928179-95ca0708-3ca5-4b8c-89ca-f276f550c78b.png)
